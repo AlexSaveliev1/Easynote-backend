@@ -3,6 +3,7 @@ let express = require('express'),
   favicon = require('serve-favicon'),
   logger = require('morgan'),
   cookieParser = require('cookie-parser');   bodyParser = require('body-parser'),
+  cors = require('cors'),
 
   index = require('./routes/index'),
   signIn = require('./routes/sign-in'),
@@ -11,8 +12,9 @@ let express = require('express'),
   app = express();
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
+// app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
+app.use(express.static(path.join(__dirname + '.../public')));
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -21,6 +23,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors());
+
+app.get('/products', function (req, res, next) {
+  console.log(req, 'arrived')
+})
+
+
 
 app.use('/', index);
 app.use('/sign-in', signIn);
