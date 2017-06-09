@@ -8,6 +8,8 @@ let express = require('express'),
   index = require('./routes/index'),
   signIn = require('./routes/sign-in'),
   signUp = require('./routes/sign-up'),
+  createNote = require('./routes/create-note'),
+  notes = require('./routes/notes'),
 
   app = express();
 
@@ -34,6 +36,9 @@ app.get('/products', function (req, res, next) {
 app.use('/', index);
 app.use('/sign-in', signIn);
 app.use('/sign-up', signUp);
+app.use('/create-note', createNote);
+app.use('/notes', notes);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
