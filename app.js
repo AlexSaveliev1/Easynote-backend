@@ -5,12 +5,9 @@ let express = require('express'),
   cookieParser = require('cookie-parser');   bodyParser = require('body-parser'),
   cors = require('cors'),
 
-  index = require('./routes/index'),
   signIn = require('./routes/sign-in'),
   signUp = require('./routes/sign-up'),
-  createNote = require('./routes/create-note'),
-  note = require('./routes/note'),
-  token = require('./routes/token'),
+  notes = require('./routes/notes'),
 
   app = express();
 
@@ -23,18 +20,16 @@ app.use(express.static(path.join(__dirname + '.../public')));
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
+app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
 
-app.get('/products', function (req, res, next) {
-  console.log(req, 'arrived')
-})
 
 app.use('/sign-in', signIn);
 app.use('/sign-up', signUp);
-app.use('/note', note);
+app.use('/notes', notes);
 
 
 // catch 404 and forward to error handler
