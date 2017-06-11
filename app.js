@@ -9,7 +9,8 @@ let express = require('express'),
   signIn = require('./routes/sign-in'),
   signUp = require('./routes/sign-up'),
   createNote = require('./routes/create-note'),
-  notes = require('./routes/notes'),
+  note = require('./routes/note'),
+  token = require('./routes/token'),
 
   app = express();
 
@@ -31,13 +32,9 @@ app.get('/products', function (req, res, next) {
   console.log(req, 'arrived')
 })
 
-
-
-app.use('/', index);
 app.use('/sign-in', signIn);
 app.use('/sign-up', signUp);
-app.use('/create-note', createNote);
-app.use('/notes', notes);
+app.use('/note', note);
 
 
 // catch 404 and forward to error handler

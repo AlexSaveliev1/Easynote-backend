@@ -4,7 +4,8 @@ mongoose.connect('mongodb://localhost/easynote');
 
 let noteSchema = mongoose.Schema({
   title: String,
-  description: String
+  description: String,
+  userId: String
 });
 
 let noteModel = mongoose.model('notes', noteSchema);

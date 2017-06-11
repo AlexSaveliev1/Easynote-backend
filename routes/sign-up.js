@@ -9,7 +9,7 @@ router.get('/', function(req, res, next) {
 router.post('/', (req, res, next) => {
   const { firstName, lastName, email, password } = req.body,
     newUser = new userModel();
-
+  
   newUser.firstName = firstName;
   newUser.lastName = lastName;
   newUser.email = email;
