@@ -8,6 +8,7 @@ let express = require('express'),
   signIn = require('./routes/sign-in'),
   signUp = require('./routes/sign-up'),
   notes = require('./routes/notes'),
+  users = require('./routes/users'),
 
   app = express();
 
@@ -30,6 +31,7 @@ app.use(cors());
 app.use('/sign-in', signIn);
 app.use('/sign-up', signUp);
 app.use('/notes', notes);
+app.use('/users', users);
 
 
 // catch 404 and forward to error handler

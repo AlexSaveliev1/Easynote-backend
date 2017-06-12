@@ -69,8 +69,16 @@ router.delete('/:id', function(req, res, next) {
   });
 });
 
+router.delete('/', function(req, res, next) {
+  const idToRemove = req.body['notes[]'];
+  noteModel.remove({
+    _id: {$in: idToRemove}}, () => {
+      res.sendStatus(200);
+    });
+});
+
 router.patch('/:id', function(req, res, next) {
-console.log(req.body.data.attributes)
+  console.log(req.body, 'arrived')
   noteModel.findOneAndUpdate({ _id: req.params.id }, { $set:
     {
       title: req.body.data.attributes.title,
@@ -90,16 +98,37 @@ console.log(req.body.data.attributes)
          }
        }
 
-
       res.status(200);
       res.json({data: serialized})
   });
 });
 
+ router.patch('/', function(req, res, next) {
+   const notesIDs = req.body['notes[]'],
+     param = req.body['params[recentlyDeleted]'],
+     responseNotes = [];
+
+     if (Array.isArray(notesIDs)) {
+       notesIDs.forEach(note => {
+         noteModel.findOneAndUpdate({ _id: note }, { $set:
+           {
+             recentlyDeleted: param
+           }}, { new: true }, (err, note) => console.log('done'));
+       })
+     } else {
+       noteModel.findOneAndUpdate({ _id: notesIDs }, { $set:
+         {
+           recentlyDeleted: param
+         }}, { new: true }, function(err, updatedNote) {
+       }, () => res.sendStatus(200));
+     }
+
+     res.sendStatus(200);
+});
+
 router.post('/', (req, res, next) => {
   const user = req.headers.authorization.split(' ')[1],
     newNote = new noteModel();
-
 
   newNote.title = req.body.data.attributes.title;
   newNote.description=req.body.data.attributes.description;

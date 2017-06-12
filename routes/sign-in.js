@@ -15,7 +15,7 @@ router.post('/', function(req, res, next) {
     }
 
     res.status(200).send(`{"access_token": "${user._id}"}`);
-  })
+  });
 });
 
 module.exports = router;
