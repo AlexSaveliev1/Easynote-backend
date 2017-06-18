@@ -1,6 +1,7 @@
 let express = require('express'),
   router = express.Router(),
-  noteModel = require('../models/note');
+  noteModel = require('../models/note'),
+  moment = require('moment');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -16,7 +17,8 @@ router.get('/', function(req, res, next) {
          title: note.title,
          description: note.description,
          user: note.user,
-         'recently-deleted': note.recentlyDeleted
+         'recently-deleted': note.recentlyDeleted,
+         date: note.date
        }
      }
    });
@@ -39,7 +41,8 @@ router.get('/:id', function(req, res, next) {
          title: note.title,
          description: note.description,
          user: note.user,
-         'recently-deleted': note.recentlyDeleted
+         'recently-deleted': note.recentlyDeleted,
+         date: note.date
        }
      }
    });
@@ -62,7 +65,8 @@ router.delete('/:id', function(req, res, next) {
           title: note.title,
           description: note.description,
           user: note.user,
-          'recently-deleted': note.recentlyDeleted
+          'recently-deleted': note.recentlyDeleted,
+          date: note.date
         }
       }
     });
@@ -78,7 +82,6 @@ router.delete('/', function(req, res, next) {
 });
 
 router.patch('/:id', function(req, res, next) {
-  console.log(req.body, 'arrived')
   noteModel.findOneAndUpdate({ _id: req.params.id }, { $set:
     {
       title: req.body.data.attributes.title,
@@ -94,7 +97,8 @@ router.patch('/:id', function(req, res, next) {
            title: updatedNote.title,
            description: updatedNote.description,
            user: updatedNote.user,
-           'recently-deleted': updatedNote.recentlyDeleted
+           'recently-deleted': updatedNote.recentlyDeleted,
+           date: updatedNote.date
          }
        }
 
@@ -134,7 +138,7 @@ router.post('/', (req, res, next) => {
   newNote.description=req.body.data.attributes.description;
   newNote.user=user;
   newNote.recentlyDeleted=false;
-
+  newNote.date=moment(new Date()).format('DD/MM/YYYY');
   newNote.save((err, savedNote) => {
     if (err) {
       res.setHeader('Content-Type', 'application/json');
@@ -152,14 +156,13 @@ router.post('/', (req, res, next) => {
             title: savedNote.title,
             description: savedNote.description,
             user: savedNote.user,
-            'recently-deleted': savedNote.recentlyDeleted
+            'recently-deleted': savedNote.recentlyDeleted,
+            date: savedNote.date
           }
         }
       });
     }
   });
-
-
 });
 
 module.exports = router;
